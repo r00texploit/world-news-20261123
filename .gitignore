@@ -1,0 +1,16 @@
+.claude/
+.env
+*.tar.gz
+
+# local output of main.py and the render script
+out/
+design/build/
+
+# python caches
+__pycache__/
+*.pyc
+
+# never commit keys or wallets
+*keypair*.json
+wallet.json
+credentials*

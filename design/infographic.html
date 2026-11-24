@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>World news | Monday 23 November 2026</title>
+<!--
+  The source of entry.png: a 1024 x 1024 one-page news infographic. design/render.py screenshots it with a headless
+  Chrome or Edge and writes ../entry.png. Every icon is drawn here as inline SVG; fonts are system fonts.
+  Red date chips mark what was announced or happened on 23 November 2026; grey chips mark earlier events that were
+  still in the news that day. Sources for every line are listed in README.md.
+-->
+<style>
+  :root {
+    --paper: #f3efe6;
+    --card: #ffffff;
+    --ink: #121a2b;
+    --muted: #4a5466;
+    --rule: #d8d1c2;
+    --today: #c8102e;
+    --earlier: #6b7280;
+    --mast: #0b1626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1024px; height: 1024px; overflow: hidden; background: var(--paper); }
+  body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--ink); }
+
+  .mast { height: 132px; background: var(--mast); padding: 20px 30px 0; color: #fff; }
+  .title { display: flex; align-items: center; gap: 16px; height: 62px; white-space: nowrap; }
+  .title > span { flex: none; }
+  .title .name { font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 52px; letter-spacing: 0.5px; line-height: 1; }
+  .title .bar { width: 5px; height: 50px; background: var(--today); }
+  .title .date { font-weight: 600; font-size: 33px; letter-spacing: 0.3px; color: #ffd36b; line-height: 1; }
+  .kicker { margin-top: 12px; font-size: 17px; color: #c3cde0; letter-spacing: 0.2px; }
+
+  main { padding: 0 28px; }
+  .section { display: flex; align-items: center; gap: 10px; margin: 14px 0 8px; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .section .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .section .line { flex: 1; height: 2px; background: var(--rule); }
+  .section.today { color: var(--today); }
+  .section.today .dot { background: var(--today); }
+  .section.earlier { color: var(--earlier); }
+  .section.earlier .dot { border: 3px solid var(--earlier); }
+
+  .card { position: relative; background: var(--card); border-radius: 10px; border: 1px solid #e3ddd0; box-shadow: 0 1px 0 #d9d2c3; overflow: hidden; }
+  .card.today { border-top: 5px solid var(--today); }
+  .card.earlier { border-top: 5px solid #9aa1ad; }
+  .tag { font-size: 13.5px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+  .chip { position: absolute; top: 12px; right: 12px; font-size: 14px; font-weight: 800; letter-spacing: 1px; padding: 4px 9px; border-radius: 5px; line-height: 1; }
+  .chip.today { background: var(--today); color: #fff; }
+  .chip.earlier { background: #fff; color: var(--earlier); border: 2px solid var(--earlier); padding: 2px 7px; }
+  h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 700; line-height: 1.12; letter-spacing: -0.2px; }
+  p { color: var(--muted); line-height: 1.32; }
+
+  .lead { height: 208px; display: flex; }
+  .lead .art { width: 196px; flex: none; background: #e7eefb; display: flex; align-items: center; justify-content: center; }
+  .lead .text { padding: 16px 22px 0 22px; }
+  .lead h2 { font-size: 34px; margin: 10px 0 10px 0; }
+  .lead p { font-size: 19px; }
+
+  .pair { display: flex; gap: 16px; margin-top: 14px; }
+  .pair .card { flex: 1; height: 228px; padding: 14px 18px 0 18px; }
+  .pair .head { display: flex; gap: 14px; align-items: center; margin-bottom: 10px; }
+  .pair svg { flex: none; }
+  .pair h2 { font-size: 27px; margin-bottom: 6px; }
+  .pair p { font-size: 17px; }
+
+  .trio { display: flex; gap: 14px; }
+  .trio .card { flex: 1; height: 288px; padding: 14px 16px 0 16px; }
+  .trio .icon { height: 90px; display: flex; align-items: flex-end; margin-bottom: 8px; }
+  .trio h2 { font-size: 23.5px; margin: 6px 0 8px; }
+  .trio p { font-size: 15.5px; }
+
+  footer { position: absolute; left: 28px; right: 28px; bottom: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--muted); border-top: 2px solid var(--rule); padding-top: 9px; }
+  footer .legend { display: flex; align-items: center; gap: 8px; }
+  footer .mini { font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+  footer .mini.today { background: var(--today); color: #fff; }
+  footer .mini.earlier { border: 2px solid var(--earlier); color: var(--earlier); padding: 0 4px; }
+  footer .src { text-align: right; }
+</style>
+</head>
+<body>
+  <header class="mast">
+    <div class="title">
+      <span class="name">WORLD NEWS</span>
+      <span class="bar"></span>
+      <span class="date">MONDAY 23 NOVEMBER 2026</span>
+    </div>
+    <div class="kicker">The day’s news in six stories: three from 23 November itself, three earlier events still making headlines</div>
+  </header>
+
+  <main>
+    <div class="section today"><span class="dot"></span>On 23 November<span class="line"></span></div>
+
+    <!-- 1. Ukraine: UN Security Council -->
+    <article class="card today lead">
+      <div class="art">
+        <svg width="170" height="170" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="47" fill="#cfdcf5"/>
+          <!-- snowflake: winter -->
+          <g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round">
+            <path d="M20 16v16M12 24h16M14.5 18.5l11 11M25.5 18.5l-11 11"/>
+          </g>
+          <!-- pylon -->
+          <g stroke="#1b2a44" stroke-width="2.6" fill="none" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M50 14 L38 88 M50 14 L62 88"/>
+            <path d="M30 32 H70 M34 50 H66"/>
+            <path d="M46 32 L58 50 M54 32 L42 50 M42 50 L60 70 M58 50 L40 70 M40 70 L61 88 M60 70 L39 88"/>
+          </g>
+          <!-- cables, the right one cut -->
+          <g stroke="#1b2a44" stroke-width="1.6" fill="none">
+            <path d="M30 32 Q16 40 4 38"/>
+            <path d="M34 50 Q20 58 6 56"/>
+            <path d="M70 32 Q78 37 83 36"/>
+            <path d="M66 50 Q74 56 79 57"/>
+          </g>
+          <!-- spark at the cut -->
+          <path d="M86 26 L80 38 L87 38 L81 51" stroke="#f5b301" stroke-width="3.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="83" cy="36" r="2.4" fill="#c8102e"/>
+          <rect x="30" y="88" width="40" height="4" rx="2" fill="#1b2a44"/>
+        </svg>
+      </div>
+      <div class="text">
+        <div class="tag" style="color:#1f4fa8">Ukraine · UN Security Council</div>
+        <span class="chip today">23 NOV</span>
+        <h2>UN Security Council meets on Russian strikes on Ukraine’s power grid</h2>
+        <p>As winter sets in, attacks leave civilians without heat, power and water; strikes on Black Sea shipping threaten grain supplies.</p>
+      </div>
+    </article>
+
+    <div class="pair">
+      <!-- 2. Myanmar: ICJ ruling, UK recognition and sanctions -->
+      <article class="card today">
+        <span class="chip today">23 NOV</span>
+        <div class="head">
+          <svg width="78" height="78" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="48" fill="#ece4f7"/>
+            <g stroke="#4b2a7b" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M50 18 V80"/>
+              <path d="M22 30 H78"/>
+              <path d="M26 30 L16 56 M26 30 L36 56 M74 30 L64 56 M74 30 L84 56"/>
+            </g>
+            <path d="M14 56 H38 A12 9 0 0 1 14 56 Z" fill="#6b3fa0"/>
+            <path d="M62 56 H86 A12 9 0 0 1 62 56 Z" fill="#6b3fa0"/>
+            <circle cx="50" cy="18" r="4.5" fill="#4b2a7b"/>
+            <rect x="34" y="79" width="32" height="7" rx="3" fill="#4b2a7b"/>
+          </svg>
+          <div class="tag" style="color:#5b2f91">Myanmar · Rohingya<br>genocide ruling</div>
+        </div>
+        <h2>UK recognises Rohingya genocide after ICJ ruling</h2>
+        <p>UK and 12 countries back the court’s 19&nbsp;Nov judgment; London sanctions five Myanmar military officers.</p>
+      </article>
+
+      <!-- 3. EU: Council's final green light for the 2027 budget -->
+      <article class="card today">
+        <span class="chip today">23 NOV</span>
+        <div class="head">
+          <svg width="78" height="78" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="48" fill="#e3ebfb"/>
+            <circle cx="46" cy="50" r="30" fill="#f2b705" stroke="#b78400" stroke-width="3"/>
+            <circle cx="46" cy="50" r="23" fill="none" stroke="#fff3c4" stroke-width="2"/>
+            <text x="46" y="62" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="34" fill="#0b3d91">€</text>
+            <circle cx="74" cy="72" r="15" fill="#15803d" stroke="#fff" stroke-width="3"/>
+            <path d="M66 72 L72 78 L82 66" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="tag" style="color:#0b3d91">Council of the EU<br>2027 budget</div>
+        </div>
+        <h2>EU ministers give final green light to 2027 budget</h2>
+        <p>€199.7bn in commitments and €211.5bn in payments; the European Parliament still has to vote.</p>
+      </article>
+    </div>
+
+    <div class="section earlier"><span class="dot"></span>Earlier events, still in the news<span class="line"></span></div>
+
+    <div class="trio">
+      <!-- 4. COP31 -->
+      <article class="card earlier">
+        <span class="chip earlier">22 NOV</span>
+        <div class="icon">
+          <svg width="82" height="82" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="42" cy="54" r="36" fill="#d9f0e1"/>
+            <circle cx="42" cy="54" r="30" fill="#2f9e5a"/>
+            <path d="M24 40 q10 -6 16 2 q6 8 -2 14 q-8 4 -6 12 M50 30 q8 4 6 12 q-2 8 8 10 M58 68 q-6 4 -12 2" stroke="#d9f0e1" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <rect x="76" y="12" width="12" height="62" rx="6" fill="#ffffff" stroke="#9b1c1c" stroke-width="3"/>
+            <rect x="79.5" y="30" width="5" height="44" rx="2.5" fill="#c8102e"/>
+            <circle cx="82" cy="80" r="10" fill="#c8102e" stroke="#9b1c1c" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="tag" style="color:#15803d">Climate · COP31</div>
+        <h2>EU: COP31 outcome “fell short”</h2>
+        <p>Antalya summit ended on 22 Nov without a climate pact; the EU did not endorse the cover decision.</p>
+      </article>
+
+      <!-- 5. Syria polio -->
+      <article class="card earlier">
+        <span class="chip earlier">9–19 NOV</span>
+        <div class="icon">
+          <svg width="82" height="82" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="40" cy="56" r="36" fill="#d5eef2"/>
+            <g stroke="#0e7490" stroke-width="3.2" stroke-linecap="round">
+              <path d="M40 30 V22 M40 82 V90 M14 56 H6 M66 56 H74 M22 38 L16 32 M58 74 L64 80 M22 74 L16 80 M58 38 L64 32"/>
+            </g>
+            <g fill="#0e7490">
+              <circle cx="40" cy="20" r="3.6"/><circle cx="40" cy="92" r="3.6"/><circle cx="4" cy="56" r="3.6"/><circle cx="76" cy="56" r="3.6"/>
+              <circle cx="14" cy="30" r="3.6"/><circle cx="66" cy="82" r="3.6"/><circle cx="14" cy="82" r="3.6"/><circle cx="66" cy="30" r="3.6"/>
+            </g>
+            <circle cx="40" cy="56" r="24" fill="#0e7490"/>
+            <circle cx="32" cy="50" r="5" fill="#7fd0dd"/><circle cx="47" cy="62" r="4" fill="#7fd0dd"/><circle cx="46" cy="46" r="3" fill="#7fd0dd"/>
+            <!-- oral vaccine dropper -->
+            <g transform="rotate(28 80 30)">
+              <rect x="74" y="4" width="12" height="14" rx="4" fill="#c8102e"/>
+              <rect x="75" y="17" width="10" height="26" rx="2" fill="#ffffff" stroke="#334155" stroke-width="2.4"/>
+              <path d="M77 43 L80 52 L83 43 Z" fill="#334155"/>
+            </g>
+            <path d="M88 52 q4 6 0 9 q-4 -3 0 -9 Z" fill="#c8102e"/>
+          </svg>
+        </div>
+        <div class="tag" style="color:#0e7490">Health · Syria</div>
+        <h2>Vaccine-derived polio found in Syria</h2>
+        <p>WHO and polio partners report three type 1 (cVDPV1) paralysis cases in Deir&nbsp;ez&#8209;Zor; vaccination under way.</p>
+      </article>
+
+      <!-- 6. BepiColombo -->
+      <article class="card earlier">
+        <span class="chip earlier">21 NOV</span>
+        <div class="icon">
+          <svg width="82" height="82" viewBox="0 0 100 100" aria-hidden="true">
+            <rect x="0" y="0" width="100" height="100" rx="50" fill="#1e1b3a"/>
+            <circle cx="14" cy="18" r="1.4" fill="#fff"/><circle cx="84" cy="14" r="1.2" fill="#fff"/><circle cx="90" cy="70" r="1.3" fill="#fff"/><circle cx="20" cy="84" r="1.1" fill="#fff"/>
+            <ellipse cx="48" cy="54" rx="42" ry="16" fill="none" stroke="#a5b4fc" stroke-width="2" stroke-dasharray="4 3" transform="rotate(-18 48 54)"/>
+            <circle cx="46" cy="56" r="20" fill="#9ca3af"/>
+            <circle cx="40" cy="50" r="4" fill="#7b8190"/><circle cx="52" cy="62" r="3" fill="#7b8190"/><circle cx="53" cy="48" r="2.4" fill="#7b8190"/>
+            <g transform="translate(80 36) rotate(-18)">
+              <rect x="-15" y="-3" width="10" height="6" fill="#60a5fa"/>
+              <rect x="5" y="-3" width="10" height="6" fill="#60a5fa"/>
+              <rect x="-5" y="-5" width="10" height="10" fill="#fbbf24" stroke="#fff" stroke-width="1.2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="tag" style="color:#4338ca">Space · ESA / JAXA</div>
+        <h2>BepiColombo safe in orbit around Mercury</h2>
+        <p>Entered orbit on 21 Nov; a software fault cut its braking burn short, giving a 75&#8209;hour orbit, not the planned&nbsp;58.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div class="legend"><span class="mini today">23 NOV</span> happened or announced that day <span class="mini earlier">21 NOV</span> earlier event</div>
+    <div class="src">Sources: UN News · GOV.UK · Council of the EU · ESA · EEAS · WHO / GPEI</div>
+  </footer>
+</body>
+</html>
